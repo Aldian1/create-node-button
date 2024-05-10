@@ -10,21 +10,31 @@ const initialNodes = [
     id: "1",
     type: "custom",
     position: { x: 0, y: 0 },
+    draggable: true,
   },
   {
     id: "2",
     type: "custom",
     position: { x: 250, y: 320 },
+    draggable: true,
   },
   {
     id: "3",
     type: "custom",
     position: { x: 40, y: 300 },
+    draggable: true,
   },
   {
     id: "4",
     type: "custom",
     position: { x: 300, y: 0 },
+    draggable: true,
+  },
+  {
+    id: "5",
+    type: "custom",
+    position: { x: 150, y: 150 },
+    draggable: true,
   },
 ];
 
