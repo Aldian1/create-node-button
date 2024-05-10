@@ -20,12 +20,12 @@ const Index = () => {
   };
 
   return (
-    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" position="relative">
       <VStack spacing={4}>
-        <Button colorScheme="blue" onClick={addNode}>
+        <Button colorScheme="blue" onClick={addNode} position="absolute" bottom="20px" right="20px">
           Add Node
         </Button>
-        <ReactFlow nodes={nodes} edges={edges} fitView style={{ width: "100%", height: "100vh" }}>
+        <ReactFlow nodes={nodes} edges={edges} fitView style={{ width: "100%", height: "100%" }}>
           <MiniMap />
           <Controls />
         </ReactFlow>
