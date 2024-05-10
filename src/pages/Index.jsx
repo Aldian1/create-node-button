@@ -9,16 +9,10 @@ const Index = () => {
 
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-      <VStack spacing={4}>
-        <Text fontSize="2xl">Your Blank Canvas</Text>
-        <ReactFlow nodes={nodes} edges={edges} fitView>
-          <MiniMap />
-          <Controls />
-        </ReactFlow>
-        <Button colorScheme="blue" onClick={() => navigate("/easy-connect")}>
-          Go to Easy Connect
-        </Button>
-      </VStack>
+      <ReactFlow nodes={nodes} edges={edges} fitView style={{ width: "100%", height: "100vh" }}>
+        <MiniMap />
+        <Controls />
+      </ReactFlow>
     </Container>
   );
 };
