@@ -4,7 +4,7 @@ import ReactFlow, { MiniMap, Controls } from "reactflow";
 import "reactflow/dist/style.css";
 
 const Index = () => {
-  const nodes = [{ id: "1", type: "default", position: { x: 250, y: 5 }, data: { label: "Hello World" } }];
+  const nodes = [{ id: "1", type: "default", position: { x: 250, y: 5 }, data: { label: "Hello World" }, draggable: true }];
   const edges = [];
 
   return (
