@@ -1,4 +1,5 @@
-import { Container, Text, VStack } from "@chakra-ui/react";
+import { Button, Container, Text, VStack } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import ReactFlow, { MiniMap, Controls } from "reactflow";
 import "reactflow/dist/style.css";
 
@@ -14,6 +15,9 @@ const Index = () => {
           <MiniMap />
           <Controls />
         </ReactFlow>
+        <Button colorScheme="blue" onClick={() => navigate("/easy-connect")}>
+          Go to Easy Connect
+        </Button>
       </VStack>
     </Container>
   );
