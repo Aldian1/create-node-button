@@ -21,7 +21,7 @@ const Index = () => {
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
       <ReactFlow nodes={nodes} edges={edges} fitView style={{ width: "100%", height: "100vh", position: "relative" }}>
-        <Button onClick={addNode} colorScheme="blue" position="absolute" top="10px" right="10px">
+        <Button onClick={addNode} colorScheme="blue" position="absolute" top="10px" right="10px" zIndex="10">
           Add Node
         </Button>
         <MiniMap />
