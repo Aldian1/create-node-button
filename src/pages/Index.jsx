@@ -36,7 +36,7 @@ const Index = () => {
 
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-      <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onNodeDoubleClick={handleDoubleClick} onConnect={(params) => setEdges((eds) => addEdge(params, eds))} fitView style={{ width: "100%", height: "100vh", position: "relative" }}>
+      <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onNodeDoubleClick={handleDoubleClick} onConnect={(params) => setEdges((eds) => addEdge({ ...params, animated: true, style: { stroke: "#000" } }, eds))} fitView style={{ width: "100%", height: "100vh", position: "relative" }}>
         {editingNode && (
           <form onSubmit={handleNameSubmit} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: "10", background: "white" }}>
             <Input value={nodeName} onChange={handleNameChange} onBlur={handleNameSubmit} autoFocus />
