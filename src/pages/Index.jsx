@@ -38,8 +38,15 @@ const Index = () => {
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
       <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onNodeDoubleClick={handleDoubleClick} fitView style={{ width: "100%", height: "100vh", position: "relative" }}>
         {editingNode && (
-          <form onSubmit={handleNameSubmit} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: "10" }}>
-            <Input value={nodeName} onChange={handleNameChange} autoFocus />
+          <form onSubmit={handleNameSubmit} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: "10", background: "white" }}>
+            <Input
+              value={nodeName}
+              onChange={handleNameChange}
+              onBlur={() => {
+                setEditingNode(null);
+              }}
+              autoFocus
+            />
           </form>
         )}
         <Button onClick={addNode} colorScheme="blue" position="absolute" top="10px" right="10px" zIndex="10">
