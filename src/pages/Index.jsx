@@ -1,5 +1,5 @@
 import { Button, Container, Input } from "@chakra-ui/react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge } from "reactflow";
 import "reactflow/dist/style.css";
 
@@ -35,12 +35,22 @@ const Index = () => {
     localStorage.setItem("edges", JSON.stringify(edges));
   };
 
+  const handleLoad = () => {
+    const loadedNodes = JSON.parse(localStorage.getItem("nodes")) || [];
+    const loadedEdges = JSON.parse(localStorage.getItem("edges")) || [];
+    setNodes(loadedNodes);
+    setEdges(loadedEdges);
+  };
+
   const handleClear = () => {
-    localStorage.removeItem("nodes");
-    localStorage.removeItem("edges");
+    localStorage.clear();
     setNodes([]);
     setEdges([]);
   };
+
+  useEffect(() => {
+    handleClear();
+  }, []);
 
   const addNode = useCallback(() => {
     const newNode = {
