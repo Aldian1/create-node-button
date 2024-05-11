@@ -48,10 +48,6 @@ const Index = () => {
     setEdges([]);
   };
 
-  useEffect(() => {
-    handleClear();
-  }, []);
-
   const addNode = useCallback(() => {
     const newNode = {
       id: `node-${nodes.length + 1}`,
@@ -95,6 +91,9 @@ const Index = () => {
         <MiniMap />
         <Button onClick={handleSave} colorScheme="green" position="absolute" top="10px" right="10px" zIndex="10">
           Save
+        </Button>
+        <Button onClick={handleLoad} colorScheme="teal" position="absolute" top="50px" right="100px" zIndex="10">
+          Load
         </Button>
         <Button onClick={handleClear} colorScheme="red" position="absolute" top="50px" right="10px" zIndex="10">
           Clear
