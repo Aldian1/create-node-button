@@ -30,6 +30,18 @@ const Index = () => {
     setEditingNode(null);
   };
 
+  const handleSave = () => {
+    localStorage.setItem("nodes", JSON.stringify(nodes));
+    localStorage.setItem("edges", JSON.stringify(edges));
+  };
+
+  const handleClear = () => {
+    localStorage.removeItem("nodes");
+    localStorage.removeItem("edges");
+    setNodes([]);
+    setEdges([]);
+  };
+
   const addNode = useCallback(() => {
     const newNode = {
       id: `node-${nodes.length + 1}`,
@@ -67,10 +79,16 @@ const Index = () => {
             <Input value={nodeName} onChange={handleNameChange} onBlur={handleNameSubmit} autoFocus />
           </form>
         )}
-        <Button onClick={addNode} colorScheme="blue" position="absolute" top="10px" right="10px" zIndex="10">
+        <Button onClick={addNode} colorScheme="blue" position="absolute" top="10px" right="100px" zIndex="10">
           Add Node
         </Button>
         <MiniMap />
+        <Button onClick={handleSave} colorScheme="green" position="absolute" top="10px" right="10px" zIndex="10">
+          Save
+        </Button>
+        <Button onClick={handleClear} colorScheme="red" position="absolute" top="50px" right="10px" zIndex="10">
+          Clear
+        </Button>
         <Controls />
       </ReactFlow>
     </Container>
