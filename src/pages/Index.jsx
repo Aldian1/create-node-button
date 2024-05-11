@@ -6,7 +6,7 @@ import "reactflow/dist/style.css";
 const Index = () => {
   const initialNodes = (JSON.parse(localStorage.getItem("nodes")) || [{ id: "1", type: "default", position: { x: 250, y: 5 }, data: { label: "Hello World" } }]).map((node) => ({
     ...node,
-    position: node.position ? { x: node.position.x || 0, y: node.position.y || 0 } : { x: 0, y: 0 },
+    position: node.position ? { x: node.position.x || 250, y: node.position.y || 100 } : { x: 250, y: 100 },
   }));
   const initialEdges = JSON.parse(localStorage.getItem("edges")) || [];
   const [nodes, setNodes] = useNodesState(initialNodes);
