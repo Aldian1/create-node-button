@@ -1,4 +1,4 @@
-import { Button, Container, Input } from "@chakra-ui/react";
+import { Button, Container, Input, Flex, Spacer } from "@chakra-ui/react";
 import React, { useCallback, useState, useEffect } from "react";
 import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge } from "reactflow";
 import "reactflow/dist/style.css";
@@ -85,19 +85,23 @@ const Index = () => {
             <Input value={nodeName} onChange={handleNameChange} onBlur={handleNameSubmit} autoFocus />
           </form>
         )}
-        <Button onClick={addNode} colorScheme="blue" position="absolute" top="10px" right="100px" zIndex="10">
-          Add Node
-        </Button>
-        <MiniMap />
-        <Button onClick={handleSave} colorScheme="green" position="absolute" top="10px" right="10px" zIndex="10">
-          Save
-        </Button>
-        <Button onClick={handleLoad} colorScheme="teal" position="absolute" top="50px" right="100px" zIndex="10">
-          Load
-        </Button>
-        <Button onClick={handleClear} colorScheme="red" position="absolute" top="50px" right="10px" zIndex="10">
-          Clear
-        </Button>
+        <Flex position="absolute" top="10px" left="10px" right="10px" zIndex="10" justifyContent="space-between" alignItems="center">
+          <Button onClick={addNode} colorScheme="blue">
+            Add Node
+          </Button>
+          <Spacer />
+          <Button onClick={handleSave} colorScheme="green">
+            Save
+          </Button>
+          <Spacer />
+          <Button onClick={handleLoad} colorScheme="teal">
+            Load
+          </Button>
+          <Spacer />
+          <Button onClick={handleClear} colorScheme="red">
+            Clear
+          </Button>
+        </Flex>
         <Controls />
       </ReactFlow>
     </Container>
