@@ -1,4 +1,5 @@
 import { Button, Container, Input, Flex, Spacer } from "@chakra-ui/react";
+import { FaPlus, FaSave, FaUpload, FaTrash } from "react-icons/fa";
 import React, { useCallback, useState, useEffect } from "react";
 import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge } from "reactflow";
 import "reactflow/dist/style.css";
@@ -86,19 +87,19 @@ const Index = () => {
           </form>
         )}
         <Flex position="absolute" top="10px" left="10px" right="10px" zIndex="10" justifyContent="space-between" alignItems="center">
-          <Button onClick={addNode} colorScheme="blue">
+          <Button onClick={addNode} colorScheme="blue" leftIcon={<FaPlus />}>
             Add Node
           </Button>
           <Spacer />
-          <Button onClick={handleSave} colorScheme="green">
+          <Button onClick={handleSave} colorScheme="blue" leftIcon={<FaSave />}>
             Save
           </Button>
           <Spacer />
-          <Button onClick={handleLoad} colorScheme="teal">
+          <Button onClick={handleLoad} colorScheme="blue" leftIcon={<FaUpload />}>
             Load
           </Button>
           <Spacer />
-          <Button onClick={handleClear} colorScheme="red">
+          <Button onClick={handleClear} colorScheme="blue" leftIcon={<FaTrash />}>
             Clear
           </Button>
         </Flex>
