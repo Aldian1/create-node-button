@@ -6,7 +6,14 @@ import "reactflow/dist/style.css";
 const Index = () => {
   const initialNodes = JSON.parse(localStorage.getItem("nodes")) || [{ id: "1", type: "default", position: { x: 250, y: 5 }, data: { label: "Hello World" } }];
   const initialEdges = JSON.parse(localStorage.getItem("edges")) || [];
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes] = useNodesState(initialNodes);
+  const onNodesChange = useCallback(
+    (nds) => {
+      setNodes(nds);
+      localStorage.setItem("nodes", JSON.stringify(nds));
+    },
+    [setNodes],
+  );
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [nodeName, setNodeName] = useState("");
   const [editingNode, setEditingNode] = useState(null);
