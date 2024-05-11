@@ -4,13 +4,10 @@ import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge } f
 import "reactflow/dist/style.css";
 
 const Index = () => {
-  const initialNodes = (JSON.parse(localStorage.getItem("nodes")) || [{ id: "1", type: "default", position: { x: 250, y: 5 }, data: { label: "Hello World" } }]).map((node) => {
+  const initialNodes = (JSON.parse(localStorage.getItem("nodes")) || [{ id: "1", type: "default", data: { label: "Hello World" } }]).map((node) => {
     return {
       ...node,
-      position: {
-        x: node.position && node.position.x !== undefined ? node.position.x : 250,
-        y: node.position && node.position.y !== undefined ? node.position.y : 100,
-      },
+      position: node.position ? { x: node.position.x, y: node.position.y } : { x: 250, y: 100 },
     };
   });
   const initialEdges = JSON.parse(localStorage.getItem("edges")) || [];
