@@ -98,8 +98,9 @@ const Index = () => {
         style={{ width: "100%", height: "100vh", position: "relative" }}
       >
         {nodes.map((node) => (
-          <div key={node.id} style={{ position: "absolute", top: node.position.y, left: node.position.x }}>
-            <div style={{ position: "absolute", top: 0, right: 0, background: "grey", padding: "2px 5px", borderRadius: "3px", color: "white", fontSize: "10px" }}>{node.data.name}</div>
+          <div key={node.id} style={{ position: "absolute", top: node.position.y, left: node.position.x, width: "150px", height: "50px", border: "1px solid black", borderRadius: "5px", background: "white" }}>
+            <div style={{ position: "absolute", top: "5px", right: "5px", background: "grey", padding: "2px 5px", borderRadius: "3px", color: "white", fontSize: "10px" }}>{node.data.name}</div>
+            <div>{node.data.label}</div>
           </div>
         ))}
         {editingNode && (
@@ -107,7 +108,6 @@ const Index = () => {
             <Input value={nodeName} onChange={handleNameChange} onBlur={handleNameSubmit} autoFocus />
           </form>
         )}
-        }
         <Flex position="absolute" top="10px" left="10px" right="10px" zIndex="10" justifyContent="space-between" alignItems="center">
           <Button onClick={addNode} colorScheme="blue" leftIcon={<FaPlus />}>
             Add Node
