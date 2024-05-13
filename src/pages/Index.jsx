@@ -1,5 +1,5 @@
 import { Button, Container, Input, Flex, Spacer } from "@chakra-ui/react";
-import { FaPlus, FaMicrophone } from "react-icons/fa";
+import { FaPlus, FaMicrophone, FaStop, FaTrash } from "react-icons/fa";
 import React, { useCallback, useState, useEffect } from "react";
 import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge } from "reactflow";
 import "reactflow/dist/style.css";
@@ -10,6 +10,9 @@ const Index = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [nodeName, setNodeName] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [audioURL, setAudioURL] = useState(localStorage.getItem("audioURL") || "");
   const [editingNode, setEditingNode] = useState(null);
 
   const handleDoubleClick = (event, node) => {
@@ -32,9 +35,28 @@ const Index = () => {
   };
 
   const handleVoiceRecord = () => {
-    alert("Voice recording started!");
+    if (isRecording) {
+      mediaRecorder.stop();
+    } else {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+        const recorder = new MediaRecorder(stream);
+        setMediaRecorder(recorder);
+        recorder.start();
+        recorder.ondataavailable = (event) => {
+          const audioBlob = new Blob([event.data], { type: "audio/wav" });
+          const audioURL = URL.createObjectURL(audioBlob);
+          setAudioURL(audioURL);
+          localStorage.setItem("audioURL", audioURL);
+        };
+        setIsRecording(true);
+      });
+    }
   };
 
+  const handleDeleteAudio = () => {
+    setAudioURL("");
+    localStorage.removeItem("audioURL");
+  };
   const addNode = useCallback(() => {
     const newNode = {
       id: `node-${nodes.length + 1}`,
@@ -77,9 +99,23 @@ const Index = () => {
             Add Node
           </Button>
           <Spacer />
-          <Button onClick={handleVoiceRecord} colorScheme="blue" leftIcon={<FaMicrophone />}>
-            Record Voice
-          </Button>
+          {isRecording ? (
+            <Button onClick={handleVoiceRecord} colorScheme="red" leftIcon={<FaStop />}>
+              Stop Recording
+            </Button>
+          ) : (
+            <Button onClick={handleVoiceRecord} colorScheme="blue" leftIcon={<FaMicrophone />}>
+              Record Voice
+            </Button>
+          )}
+          {audioURL && (
+            <>
+              <audio controls src={audioURL} style={{ marginLeft: "10px" }} />
+              <Button onClick={handleDeleteAudio} colorScheme="red" leftIcon={<FaTrash />} style={{ marginLeft: "10px" }}>
+                Delete Recording
+              </Button>
+            </>
+          )}
         </Flex>
         <Controls />
       </ReactFlow>
