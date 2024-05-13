@@ -39,6 +39,7 @@ const Index = () => {
       setEditingNode(null);
     }
     setEditingNode(null);
+    setNodeName("");
   };
 
   const handleVoiceRecord = () => {
@@ -101,9 +102,12 @@ const Index = () => {
             <div style={{ position: "absolute", top: 0, right: 0, background: "grey", padding: "2px 5px", borderRadius: "3px", color: "white", fontSize: "10px" }}>{node.data.name}</div>
           </div>
         ))}
-        <form onSubmit={handleNameSubmit} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: "10", background: "white" }}>
-          <Input value={nodeName} onChange={handleNameChange} onBlur={handleNameSubmit} autoFocus />
-        </form>
+        {editingNode && (
+          <form onSubmit={handleNameSubmit} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: "10", background: "white" }}>
+            <Input value={nodeName} onChange={handleNameChange} onBlur={handleNameSubmit} autoFocus />
+          </form>
+        )}
+        }
         <Flex position="absolute" top="10px" left="10px" right="10px" zIndex="10" justifyContent="space-between" alignItems="center">
           <Button onClick={addNode} colorScheme="blue" leftIcon={<FaPlus />}>
             Add Node
