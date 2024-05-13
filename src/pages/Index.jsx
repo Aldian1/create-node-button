@@ -1,4 +1,5 @@
 import { Button, Container, Input, Flex, Spacer } from "@chakra-ui/react";
+import NodeName from "../components/NodeName";
 import { FaPlus, FaMicrophone, FaStop, FaTrash } from "react-icons/fa";
 import React, { useCallback, useState, useEffect } from "react";
 import VoiceTranscription from "../components/VoiceTranscription";
@@ -99,7 +100,7 @@ const Index = () => {
       >
         {nodes.map((node) => (
           <div key={node.id} style={{ position: "absolute", top: node.position.y, left: node.position.x }}>
-            <div style={{ position: "absolute", top: 0, right: 0, background: "grey", padding: "2px 5px", borderRadius: "3px", color: "white", fontSize: "10px" }}>{node.data.name}</div>
+            <NodeName name={node.data.name} />
           </div>
         ))}
         {editingNode && (
@@ -107,7 +108,6 @@ const Index = () => {
             <Input value={nodeName} onChange={handleNameChange} onBlur={handleNameSubmit} autoFocus />
           </form>
         )}
-        }
         <Flex position="absolute" top="10px" left="10px" right="10px" zIndex="10" justifyContent="space-between" alignItems="center">
           <Button onClick={addNode} colorScheme="blue" leftIcon={<FaPlus />}>
             Add Node
