@@ -30,11 +30,14 @@ const Index = () => {
 
   const handleNameSubmit = (event) => {
     event.preventDefault();
-    setNodes((nds) => {
-      const updatedNodes = nds.map((n, index) => (n.id === editingNode.id ? { ...n, data: { ...n.data, label: nodeName, name: `item-${index + 1}` } } : n));
-      localStorage.setItem("nodes", JSON.stringify(updatedNodes));
-      return updatedNodes;
-    });
+    if (editingNode) {
+      setNodes((nds) => {
+        const updatedNodes = nds.map((n, index) => (n.id === editingNode.id ? { ...n, data: { ...n.data, label: nodeName, name: `item-${index + 1}` } } : n));
+        localStorage.setItem("nodes", JSON.stringify(updatedNodes));
+        return updatedNodes;
+      });
+      setEditingNode(null);
+    }
     setEditingNode(null);
   };
 
@@ -94,8 +97,8 @@ const Index = () => {
         style={{ width: "100%", height: "100vh", position: "relative" }}
       >
         {nodes.map((node) => (
-          <div key={node.id} style={{ position: "absolute", top: node.position.y, left: node.position.x, background: "grey", padding: "2px 5px", borderRadius: "3px", color: "white", fontSize: "10px" }}>
-            {node.data.name}
+          <div key={node.id} style={{ position: "absolute", top: node.position.y, left: node.position.x }}>
+            <div style={{ position: "absolute", top: 0, right: 0, background: "grey", padding: "2px 5px", borderRadius: "3px", color: "white", fontSize: "10px" }}>{node.data.name}</div>
           </div>
         ))}
         <form onSubmit={handleNameSubmit} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: "10", background: "white" }}>
