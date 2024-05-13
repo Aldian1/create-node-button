@@ -29,7 +29,8 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
     "react-router-dom": "^6.20.1",
-    "reactflow": "^11.11.3"
+    "reactflow": "^11.11.3",
+    "whisper-turbo": "^0.11.0"
   },
   "prettier": {
     "printWidth": 99999999
