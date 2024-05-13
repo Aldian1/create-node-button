@@ -17,7 +17,8 @@ function VoiceTranscription() {
         .map((result) => result[0])
         .map((result) => result.transcript)
         .join("");
-      setTranscript(transcriptText);
+      const highlightedText = transcriptText.replace(/(create|delete)/gi, (match) => `<span style="background-color: yellow;">${match}</span>`);
+      setTranscript(highlightedText);
     };
 
     return () => {
@@ -25,7 +26,7 @@ function VoiceTranscription() {
     };
   }, []);
 
-  return <div style={{ position: "absolute", bottom: "10px", left: "10px", background: "white", padding: "10px", borderRadius: "5px", zIndex: 10 }}>{transcript}</div>;
+  return <div style={{ position: "absolute", bottom: "10px", left: "10px", background: "white", padding: "10px", borderRadius: "5px", zIndex: 10 }} dangerouslySetInnerHTML={{ __html: transcript }} />;
 }
 
 export default VoiceTranscription;
