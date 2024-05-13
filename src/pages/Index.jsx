@@ -101,8 +101,10 @@ const Index = () => {
         {nodes.map((node) => (
           <div key={node.id} style={{ position: "absolute", top: node.position.y, left: node.position.x }}>
             <div>
-              <div>{node.data.label}</div>
-              <NodeName name={node.data.name} />
+              <div>
+                {node.data.label}
+                <NodeName name={node.data.name} />
+              </div>
             </div>
           </div>
         ))}
