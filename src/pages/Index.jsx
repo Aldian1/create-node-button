@@ -1,5 +1,5 @@
 import { Button, Container, Input, Flex, Spacer } from "@chakra-ui/react";
-import { FaPlus, FaSave, FaUpload, FaTrash } from "react-icons/fa";
+import { FaPlus, FaMicrophone } from "react-icons/fa";
 import React, { useCallback, useState, useEffect } from "react";
 import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge } from "reactflow";
 import "reactflow/dist/style.css";
@@ -31,22 +31,8 @@ const Index = () => {
     setEditingNode(null);
   };
 
-  const handleSave = () => {
-    localStorage.setItem("nodes", JSON.stringify(nodes));
-    localStorage.setItem("edges", JSON.stringify(edges));
-  };
-
-  const handleLoad = () => {
-    const loadedNodes = JSON.parse(localStorage.getItem("nodes")) || [];
-    const loadedEdges = JSON.parse(localStorage.getItem("edges")) || [];
-    setNodes(loadedNodes);
-    setEdges(loadedEdges);
-  };
-
-  const handleClear = () => {
-    localStorage.clear();
-    setNodes([]);
-    setEdges([]);
+  const handleVoiceRecord = () => {
+    alert("Voice recording started!");
   };
 
   const addNode = useCallback(() => {
@@ -91,16 +77,8 @@ const Index = () => {
             Add Node
           </Button>
           <Spacer />
-          <Button onClick={handleSave} colorScheme="blue" leftIcon={<FaSave />}>
-            Save
-          </Button>
-          <Spacer />
-          <Button onClick={handleLoad} colorScheme="blue" leftIcon={<FaUpload />}>
-            Load
-          </Button>
-          <Spacer />
-          <Button onClick={handleClear} colorScheme="blue" leftIcon={<FaTrash />}>
-            Clear
+          <Button onClick={handleVoiceRecord} colorScheme="blue" leftIcon={<FaMicrophone />}>
+            Record Voice
           </Button>
         </Flex>
         <Controls />
