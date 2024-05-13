@@ -6,7 +6,10 @@ import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge } f
 import "reactflow/dist/style.css";
 
 const Index = () => {
-  const initialNodes = JSON.parse(localStorage.getItem("nodes")) || [{ id: "1", type: "default", position: { x: 250, y: 5 }, data: { label: "Hello World" } }];
+  const initialNodes = JSON.parse(localStorage.getItem("nodes")) || [{ id: "1", type: "default", position: { x: 250, y: 5 }, data: { label: "Hello World", name: "item-1" } }];
+  initialNodes.forEach((node, index) => {
+    node.data.name = `item-${index + 1}`;
+  });
   const initialEdges = JSON.parse(localStorage.getItem("edges")) || [];
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -28,7 +31,7 @@ const Index = () => {
   const handleNameSubmit = (event) => {
     event.preventDefault();
     setNodes((nds) => {
-      const updatedNodes = nds.map((n) => (n.id === editingNode.id ? { ...n, data: { ...n.data, label: nodeName } } : n));
+      const updatedNodes = nds.map((n, index) => (n.id === editingNode.id ? { ...n, data: { ...n.data, label: nodeName, name: `item-${index + 1}` } } : n));
       localStorage.setItem("nodes", JSON.stringify(updatedNodes));
       return updatedNodes;
     });
@@ -63,7 +66,7 @@ const Index = () => {
       id: `node-${nodes.length + 1}`,
       type: "default",
       position: { x: Math.random() * 400, y: Math.random() * 400 },
-      data: { label: `Node ${nodes.length + 1}` },
+      data: { label: `Node ${nodes.length + 1}`, name: `item-${nodes.length + 1}` },
     };
     setNodes((nds) => {
       const newNodes = nds.concat(newNode);
@@ -90,11 +93,14 @@ const Index = () => {
         fitView
         style={{ width: "100%", height: "100vh", position: "relative" }}
       >
-        {editingNode && (
-          <form onSubmit={handleNameSubmit} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: "10", background: "white" }}>
-            <Input value={nodeName} onChange={handleNameChange} onBlur={handleNameSubmit} autoFocus />
-          </form>
-        )}
+        {nodes.map((node) => (
+          <div key={node.id} style={{ position: "absolute", top: node.position.y, left: node.position.x, background: "grey", padding: "2px 5px", borderRadius: "3px", color: "white", fontSize: "10px" }}>
+            {node.data.name}
+          </div>
+        ))}
+        <form onSubmit={handleNameSubmit} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: "10", background: "white" }}>
+          <Input value={nodeName} onChange={handleNameChange} onBlur={handleNameSubmit} autoFocus />
+        </form>
         <Flex position="absolute" top="10px" left="10px" right="10px" zIndex="10" justifyContent="space-between" alignItems="center">
           <Button onClick={addNode} colorScheme="blue" leftIcon={<FaPlus />}>
             Add Node
