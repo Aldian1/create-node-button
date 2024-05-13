@@ -1,42 +1,34 @@
-// Import necessary components and icons from Chakra UI, React Icons, and React packages
-import React, { useCallback, useState, useEffect } from "react";
 import { Button, Container, Input, Flex, Spacer } from "@chakra-ui/react";
+import NodeName from "../components/NodeName";
 import { FaPlus, FaMicrophone, FaStop, FaTrash } from "react-icons/fa";
+import React, { useCallback, useState, useEffect } from "react";
+import VoiceTranscription from "../components/VoiceTranscription";
 import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge } from "reactflow";
 import "reactflow/dist/style.css";
 
-// Functional component Index
 const Index = () => {
-  // Retrieve initial nodes and edges from localStorage, or use default if empty
-  const initialNodes = JSON.parse(localStorage.getItem("nodes")) || [{ id: "1", type: "default", position: { x: 0, y: 0 }, data: { label: "Hello World", name: "item-1" } }];
-  // Assign names to nodes based on their index
+  const initialNodes = JSON.parse(localStorage.getItem("nodes")) || [{ id: "1", type: "default", position: { x: 250, y: 5 }, data: { label: "Hello World", name: "item-1" } }];
   initialNodes.forEach((node, index) => {
     node.data.name = `item-${index + 1}`;
   });
-  // Retrieve initial edges from localStorage, or use empty array if empty
   const initialEdges = JSON.parse(localStorage.getItem("edges")) || [];
-  
-  // State variables using custom hooks from React Flow
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [nodeName, setNodeName] = useState(""); // State for node name input
-  const [isRecording, setIsRecording] = useState(false); // State for recording status
-  const [mediaRecorder, setMediaRecorder] = useState(null); // State for media recorder
-  const [audioURL, setAudioURL] = useState(localStorage.getItem("audioURL") || ""); // State for audio URL
-  const [editingNode, setEditingNode] = useState(null); // State for editing node
+  const [nodeName, setNodeName] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [audioURL, setAudioURL] = useState(localStorage.getItem("audioURL") || "");
+  const [editingNode, setEditingNode] = useState(null);
 
-  // Handler for double-clicking on a node to edit its name
   const handleDoubleClick = (event, node) => {
     setEditingNode(node);
     setNodeName(node.data.label);
   };
 
-  // Handler for changing node name input
   const handleNameChange = (event) => {
     setNodeName(event.target.value);
   };
 
-  // Handler for submitting node name change
   const handleNameSubmit = (event) => {
     event.preventDefault();
     if (editingNode) {
@@ -51,7 +43,6 @@ const Index = () => {
     setNodeName("");
   };
 
-  // Handler for starting/stopping voice recording
   const handleVoiceRecord = () => {
     if (isRecording) {
       mediaRecorder.stop();
@@ -71,13 +62,10 @@ const Index = () => {
     }
   };
 
-  // Handler for deleting recorded audio
   const handleDeleteAudio = () => {
     setAudioURL("");
     localStorage.removeItem("audioURL");
   };
-
-  // Function to add a new node
   const addNode = useCallback(() => {
     const newNode = {
       id: `node-${nodes.length + 1}`,
@@ -92,7 +80,6 @@ const Index = () => {
     });
   }, [nodes, setNodes]);
 
-  // Render JSX
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
       <ReactFlow
@@ -109,21 +96,18 @@ const Index = () => {
           })
         }
         fitView
-        style={{ width: "100vw", height: "100vh", position: "relative" }}
+        style={{ width: "100%", height: "100vh", position: "relative" }}
       >
-        {/* Render nodes */}
         {nodes.map((node) => (
           <div key={node.id} style={{ position: "absolute", top: node.position.y, left: node.position.x }}>
             <NodeName name={node.data.name} />
           </div>
         ))}
-        {/* Render node name input if editing */}
         {editingNode && (
           <form onSubmit={handleNameSubmit} style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: "10", background: "white" }}>
             <Input value={nodeName} onChange={handleNameChange} onBlur={handleNameSubmit} autoFocus />
           </form>
         )}
-        {/* Render buttons for adding nodes, recording voice, and managing recorded audio */}
         <Flex position="absolute" top="10px" left="10px" right="10px" zIndex="10" justifyContent="space-between" alignItems="center">
           <Button onClick={addNode} colorScheme="blue" leftIcon={<FaPlus />}>
             Add Node
@@ -147,14 +131,11 @@ const Index = () => {
             </>
           )}
         </Flex>
-        {/* Render controls for panning and zooming */}
         <Controls />
-        {/* Render voice transcription component if recording */}
         {isRecording && <VoiceTranscription />}
       </ReactFlow>
     </Container>
   );
 };
 
-// Export the component as default
 export default Index;
