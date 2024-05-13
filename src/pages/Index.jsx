@@ -22,9 +22,7 @@ const nodeTypes = {
 };
 
 const Index = () => {
-  const initialNodes = JSON.parse(localStorage.getItem("nodes")) || [
-    { id: "1", type: "custom", position: { x: 250, y: 5 }, data: { label: "Hello World", name: "item-1" } },
-  ];
+  const initialNodes = JSON.parse(localStorage.getItem("nodes")) || [{ id: "1", type: "custom", position: { x: 250, y: 5 }, data: { label: "Hello World", name: "item-1" } }];
 
   initialNodes.forEach((node, index) => {
     node.data.name = `item-${index + 1}`;
@@ -52,9 +50,7 @@ const Index = () => {
     event.preventDefault();
     if (editingNode) {
       setNodes((nds) => {
-        const updatedNodes = nds.map((n, index) =>
-          n.id === editingNode.id ? { ...n, data: { ...n.data, label: nodeName, name: `item-${index + 1}` } } : n
-        );
+        const updatedNodes = nds.map((n, index) => (n.id === editingNode.id ? { ...n, data: { ...n.data, label: nodeName, name: `item-${index + 1}` } } : n));
         localStorage.setItem("nodes", JSON.stringify(updatedNodes));
         return updatedNodes;
       });
@@ -70,14 +66,14 @@ const Index = () => {
     } else {
       navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
         const recorder = new MediaRecorder(stream);
-        setMediaRecorder(recorder);
-        recorder.start();
         recorder.ondataavailable = (event) => {
           const audioBlob = new Blob([event.data], { type: "audio/wav" });
           const audioURL = URL.createObjectURL(audioBlob);
           setAudioURL(audioURL);
           localStorage.setItem("audioURL", audioURL);
         };
+        recorder.start();
+        setMediaRecorder(recorder);
         setIsRecording(true);
       });
     }
