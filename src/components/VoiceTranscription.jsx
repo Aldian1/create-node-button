@@ -10,9 +10,13 @@ function VoiceTranscription() {
   const [isRecognitionStarted, setIsRecognitionStarted] = useState(false);
 
   useEffect(() => {
-    if (!isRecognitionStarted) {
-      recognition.start();
-      setIsRecognitionStarted(true);
+    try {
+      if (!isRecognitionStarted) {
+        recognition.start();
+        setIsRecognitionStarted(true);
+      }
+    } catch (error) {
+      console.error("Speech recognition error:", error);
     }
 
     recognition.onresult = (event) => {
