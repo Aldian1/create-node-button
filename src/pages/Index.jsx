@@ -1,6 +1,7 @@
 import { Button, Container, Input, Flex, Spacer } from "@chakra-ui/react";
 import { FaPlus, FaMicrophone, FaStop, FaTrash } from "react-icons/fa";
 import React, { useCallback, useState, useEffect } from "react";
+import VoiceTranscription from "../components/VoiceTranscription";
 import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge } from "reactflow";
 import "reactflow/dist/style.css";
 
@@ -118,6 +119,7 @@ const Index = () => {
           )}
         </Flex>
         <Controls />
+        {isRecording && <VoiceTranscription />}
       </ReactFlow>
     </Container>
   );
