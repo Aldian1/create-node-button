@@ -2,15 +2,18 @@ import React, { useState, useEffect } from "react";
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
-
 recognition.continuous = true;
 recognition.interimResults = true;
 
 function VoiceTranscription() {
   const [transcript, setTranscript] = useState("");
+  const [isRecognitionStarted, setIsRecognitionStarted] = useState(false);
 
   useEffect(() => {
-    recognition.start();
+    if (!isRecognitionStarted) {
+      recognition.start();
+      setIsRecognitionStarted(true);
+    }
 
     recognition.onresult = (event) => {
       const transcriptText = Array.from(event.results)
@@ -23,8 +26,9 @@ function VoiceTranscription() {
 
     return () => {
       recognition.stop();
+      setIsRecognitionStarted(false);
     };
-  }, []);
+  }, [isRecognitionStarted]);
 
   return <div style={{ position: "absolute", bottom: "10px", left: "10px", background: "white", padding: "10px", borderRadius: "5px", zIndex: 10 }} dangerouslySetInnerHTML={{ __html: transcript }} />;
 }
