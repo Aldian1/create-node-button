@@ -8,6 +8,7 @@ recognition.interimResults = true;
 function VoiceTranscription({ onCreateNode }) {
   const [transcript, setTranscript] = useState("");
   const [isRecognitionStarted, setIsRecognitionStarted] = useState(false);
+  const [nodeCreated, setNodeCreated] = useState(false);
 
   useEffect(() => {
     if (!isRecognitionStarted) {
@@ -21,7 +22,8 @@ function VoiceTranscription({ onCreateNode }) {
 
     recognition.onend = () => {
       setIsRecognitionStarted(false);
-      recognition.start(); // Restart recognition if it stops
+      setNodeCreated(false);
+      recognition.start();
     };
 
     return () => {
@@ -36,8 +38,9 @@ function VoiceTranscription({ onCreateNode }) {
         .map((result) => result.transcript)
         .join("");
       const highlightedText = transcriptText.replace(/(create node|delete)/gi, (match) => `<span style="background-color: yellow;">${match}</span>`);
-      if (/create node/i.test(transcriptText)) {
+      if (/create node/i.test(transcriptText) && !nodeCreated) {
         onCreateNode();
+        setNodeCreated(true);
       }
       setTranscript(highlightedText);
     };
