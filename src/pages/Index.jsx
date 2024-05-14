@@ -3,8 +3,8 @@ import NodeName from "../components/NodeName";
 import { FaPlus, FaMicrophone, FaStop, FaTrash } from "react-icons/fa";
 import React, { useCallback, useState, useEffect } from "react";
 import VoiceTranscription from "../components/VoiceTranscription";
-import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge, ReactFlowProvider, Handle, getBezierPath } from "reactflow";
-import RoundButton from "../components/RoundButton";
+import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge, ReactFlowProvider, Handle } from "reactflow";
+import "reactflow/dist/style.css";
 
 // Custom node component
 const CustomNode = ({ data }) => {
@@ -35,23 +35,15 @@ const Index = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [nodeName, setNodeName] = useState("");
-  const [buttonPosition, setButtonPosition] = useState(null);
-
   const onConnect = useCallback(
-    (params) => {
+    (params) =>
       setEdges((eds) => {
         const newEdges = addEdge(params, eds);
         localStorage.setItem("edges", JSON.stringify(newEdges));
-        const { sourceX, sourceY, targetX, targetY } = params;
-        const midX = (sourceX + targetX) / 2;
-        const midY = (sourceY + targetY) / 2;
-        setButtonPosition({ x: midX, y: midY });
         return newEdges;
-      });
-    },
+      }),
     [setEdges],
   );
-
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioURL, setAudioURL] = useState(localStorage.getItem("audioURL") || "");
@@ -185,7 +177,6 @@ const Index = () => {
             </>
           )}
         </Flex>
-        {buttonPosition && <RoundButton position={buttonPosition} />}
         <Controls />
         {isRecording && <VoiceTranscription onCreateNode={addNode} />}
       </ReactFlowProvider>
