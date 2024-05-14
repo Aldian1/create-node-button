@@ -5,7 +5,7 @@ const recognition = new SpeechRecognition();
 recognition.continuous = true;
 recognition.interimResults = true;
 
-function VoiceTranscription() {
+function VoiceTranscription({ addNode, deleteNode }) {
   const [transcript, setTranscript] = useState("");
   const [isRecognitionStarted, setIsRecognitionStarted] = useState(false);
 
@@ -24,7 +24,14 @@ function VoiceTranscription() {
         .map((result) => result[0])
         .map((result) => result.transcript)
         .join("");
-      const highlightedText = transcriptText.replace(/(create|delete)/gi, (match) => `<span style="background-color: yellow;">${match}</span>`);
+      const highlightedText = transcriptText.replace(/(create node|delete \w+)/gi, (match) => `<span style="background-color: yellow;">${match}</span>`);
+      if (/create node/i.test(transcriptText)) {
+        addNode();
+      }
+      const deleteMatch = transcriptText.match(/delete (\w+)/i);
+      if (deleteMatch) {
+        deleteNode(deleteMatch[1]);
+      }
       setTranscript(highlightedText);
     };
 

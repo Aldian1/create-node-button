@@ -69,6 +69,17 @@ const Index = () => {
     setAudioURL("");
   };
 
+  const deleteNode = useCallback(
+    (nodeName) => {
+      setNodes((nds) => {
+        const updatedNodes = nds.filter((node) => node.data.name !== nodeName);
+        localStorage.setItem("nodes", JSON.stringify(updatedNodes));
+        return updatedNodes;
+      });
+    },
+    [setNodes],
+  );
+
   const handleVoiceRecord = () => {
     if (isRecording) {
       mediaRecorder.stop();
@@ -175,7 +186,8 @@ const Index = () => {
           )}
         </Flex>
         <Controls />
-        {isRecording && <VoiceTranscription />}
+        {isRecording && <VoiceTranscription addNode={addNode} deleteNode={deleteNode} />}
+        {isRecording && <VoiceTranscription addNode={addNode} deleteNode={deleteNode} />}
       </ReactFlowProvider>
     </Box>
   );
