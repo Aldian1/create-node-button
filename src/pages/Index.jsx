@@ -175,7 +175,7 @@ const Index = () => {
           )}
         </Flex>
         <Controls />
-        {isRecording && <VoiceTranscription />}
+        {isRecording && <VoiceTranscription onCreateNode={addNode} />}
       </ReactFlowProvider>
     </Box>
   );
