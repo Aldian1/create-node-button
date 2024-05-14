@@ -167,7 +167,7 @@ const Index = () => {
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
-          onNodeDoubleClick={handleDoubleClick}
+          onNodeDoubleClick={(event, node) => handleDoubleClick(event, node)}
           onConnect={(params) =>
             setEdges((eds) => {
               const newEdges = addEdge({ ...params, animated: true, style: { stroke: "#000" } }, eds);
