@@ -12,7 +12,7 @@ const CustomNode = ({ data, id, setNodes, setEdges }) => {
     const newNode = {
       id: `node-${id}-connected`,
       type: "custom",
-      position: { x: data.position.x + 100, y: data.position.y + 100 },
+      position: { x: data.position.x + 200, y: data.position.y + 200 },
       data: { label: `Connected to ${data.label}`, name: `item-${id}-connected`, style: { opacity: 0.5 } },
     };
     setNodes((nds) => {
