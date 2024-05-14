@@ -41,6 +41,8 @@ const Index = () => {
     setNodeName(node.data.label);
   };
 
+  //note
+
   const handleNameChange = (event) => {
     setNodeName(event.target.value);
   };
