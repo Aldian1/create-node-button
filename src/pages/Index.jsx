@@ -3,7 +3,7 @@ import NodeName from "../components/NodeName";
 import { FaPlus, FaMicrophone, FaStop, FaTrash } from "react-icons/fa";
 import React, { useCallback, useState, useEffect } from "react";
 import VoiceTranscription from "../components/VoiceTranscription";
-import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge, ReactFlowProvider } from "reactflow";
+import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge, ReactFlowProvider, Handle } from "reactflow";
 import "reactflow/dist/style.css";
 
 // Custom node component
@@ -11,6 +11,10 @@ const CustomNode = ({ data }) => {
   return (
     <div style={{ padding: 10, border: "1px solid #ddd", borderRadius: 5, background: "#fff" }}>
       <div>{data.label}</div>
+      <div style={{ position: "absolute", top: 10, right: 10 }}>
+        <Handle type="source" position="right" />
+        <Handle type="target" position="left" />
+      </div>
       <NodeName name={data.name} />
     </div>
   );
@@ -31,6 +35,15 @@ const Index = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [nodeName, setNodeName] = useState("");
+  const onConnect = useCallback(
+    (params) =>
+      setEdges((eds) => {
+        const newEdges = addEdge(params, eds);
+        localStorage.setItem("edges", JSON.stringify(newEdges));
+        return newEdges;
+      }),
+    [setEdges],
+  );
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioURL, setAudioURL] = useState(localStorage.getItem("audioURL") || "");
@@ -119,23 +132,7 @@ const Index = () => {
   return (
     <Box width="100vw" height="100vh">
       <ReactFlowProvider>
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onNodeDoubleClick={handleDoubleClick}
-          onConnect={(params) =>
-            setEdges((eds) => {
-              const newEdges = addEdge({ ...params, animated: true, style: { stroke: "#000" } }, eds);
-              localStorage.setItem("edges", JSON.stringify(newEdges));
-              return newEdges;
-            })
-          }
-          fitView
-          nodeTypes={nodeTypes}
-          style={{ width: "100%", height: "100%" }}
-        />
+        <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onNodeDoubleClick={handleDoubleClick} onConnect={onConnect} fitView nodeTypes={nodeTypes} style={{ width: "100%", height: "100%" }} />
         {editingNode && (
           <form
             onSubmit={handleNameSubmit}
