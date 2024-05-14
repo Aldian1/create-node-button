@@ -21,7 +21,7 @@ const CustomNode = ({ data, id, setNodes, setEdges }) => {
       return newNodes;
     });
     setEdges((eds) => {
-      const newEdges = eds.concat({ id: `edge-${id}-connected`, source: id, target: newNode.id });
+      const newEdges = eds.concat({ id: `edge-${id}-connected-${Date.now()}`, source: id, target: newNode.id });
       localStorage.setItem("edges", JSON.stringify(newEdges));
       return newEdges;
     });
