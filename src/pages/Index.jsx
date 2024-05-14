@@ -70,21 +70,30 @@ const Index = () => {
   };
 
   const handleVoiceRecord = () => {
-    if (isRecording) {
+    if (isRecording && mediaRecorder) {
       mediaRecorder.stop();
+      setIsRecording(false);
     } else {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-        const recorder = new MediaRecorder(stream);
-        recorder.ondataavailable = (event) => {
-          const audioBlob = new Blob([event.data], { type: "audio/wav" });
-          const audioURL = URL.createObjectURL(audioBlob);
-          setAudioURL(audioURL);
-          localStorage.setItem("audioURL", audioURL);
-        };
-        recorder.start();
-        setMediaRecorder(recorder);
-        setIsRecording(true);
-      });
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((stream) => {
+          const recorder = new MediaRecorder(stream);
+          recorder.ondataavailable = (event) => {
+            const audioBlob = new Blob([event.data], { type: "audio/wav" });
+            const audioURL = URL.createObjectURL(audioBlob);
+            setAudioURL(audioURL);
+            localStorage.setItem("audioURL", audioURL);
+          };
+          recorder.onstop = () => {
+            setIsRecording(false);
+          };
+          recorder.start();
+          setMediaRecorder(recorder);
+          setIsRecording(true);
+        })
+        .catch((error) => {
+          console.error("Error accessing microphone:", error);
+        });
     }
   };
 
