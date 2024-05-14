@@ -4,63 +4,20 @@ import { FaPlus, FaMicrophone, FaStop, FaTrash } from "react-icons/fa";
 import React, { useCallback, useState, useEffect } from "react";
 import VoiceTranscription from "../components/VoiceTranscription";
 import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge, ReactFlowProvider } from "reactflow";
-import ButtonNode from "../components/ButtonNode";
 import "reactflow/dist/style.css";
 
 // Custom node component
-const CustomNode = ({ data, id, setNodes, setEdges }) => {
-  const addButtonNode = () => {
-    const newNode = {
-      id: `node-${id}-button`,
-      type: "button",
-      position: { x: data.position.x + 100, y: data.position.y + 100 },
-      data: { label: `Button Node ${id}`, name: `button-${id}` },
-    };
-    setNodes((nds) => {
-      const newNodes = nds.concat(newNode);
-      localStorage.setItem("nodes", JSON.stringify(newNodes));
-      return newNodes;
-    });
-    setEdges((eds) => {
-      const newEdges = eds.concat({ id: `edge-${id}-button-${Date.now()}`, source: id, target: newNode.id });
-      localStorage.setItem("edges", JSON.stringify(newEdges));
-      return newEdges;
-    });
-  };
-  const addConnectedNode = () => {
-    const newNode = {
-      id: `node-${id}-connected`,
-      type: "custom",
-      position: { x: data.position.x + 200, y: data.position.y + 200 },
-      data: { label: `Connected to ${data.label}`, name: `item-${id}-connected`, style: { opacity: 0.5 } },
-    };
-    setNodes((nds) => {
-      const newNodes = nds.concat(newNode);
-      localStorage.setItem("nodes", JSON.stringify(newNodes));
-      return newNodes;
-    });
-    setEdges((eds) => {
-      const newEdges = eds.concat({ id: `edge-${id}-connected-${Date.now()}`, source: id, target: newNode.id });
-      localStorage.setItem("edges", JSON.stringify(newEdges));
-      return newEdges;
-    });
-  };
-
+const CustomNode = ({ data }) => {
   return (
     <div style={{ padding: 10, border: "1px solid #ddd", borderRadius: 5, background: "#fff" }}>
       <div>{data.label}</div>
       <NodeName name={data.name} />
-
-      <Button onClick={addButtonNode} colorScheme="blue" size="sm" mt={2}>
-        Add Button Node
-      </Button>
     </div>
   );
 };
 
 // Define the custom node types
 const nodeTypes = {
-  button: ButtonNode,
   custom: CustomNode,
 };
 
@@ -167,7 +124,7 @@ const Index = () => {
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
-          onNodeDoubleClick={(event, node) => handleDoubleClick(event, node)}
+          onNodeDoubleClick={handleDoubleClick}
           onConnect={(params) =>
             setEdges((eds) => {
               const newEdges = addEdge({ ...params, animated: true, style: { stroke: "#000" } }, eds);
@@ -176,7 +133,7 @@ const Index = () => {
             })
           }
           fitView
-          nodeTypes={{ custom: (props) => <CustomNode {...props} setNodes={setNodes} setEdges={setEdges} /> }}
+          nodeTypes={nodeTypes}
           style={{ width: "100%", height: "100%" }}
         />
         {editingNode && (
