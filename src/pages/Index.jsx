@@ -4,10 +4,29 @@ import { FaPlus, FaMicrophone, FaStop, FaTrash } from "react-icons/fa";
 import React, { useCallback, useState, useEffect } from "react";
 import VoiceTranscription from "../components/VoiceTranscription";
 import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge, ReactFlowProvider } from "reactflow";
+import ButtonNode from "../components/ButtonNode";
 import "reactflow/dist/style.css";
 
 // Custom node component
 const CustomNode = ({ data, id, setNodes, setEdges }) => {
+  const addButtonNode = () => {
+    const newNode = {
+      id: `node-${id}-button`,
+      type: "button",
+      position: { x: data.position.x + 100, y: data.position.y + 100 },
+      data: { label: `Button Node ${id}`, name: `button-${id}` },
+    };
+    setNodes((nds) => {
+      const newNodes = nds.concat(newNode);
+      localStorage.setItem("nodes", JSON.stringify(newNodes));
+      return newNodes;
+    });
+    setEdges((eds) => {
+      const newEdges = eds.concat({ id: `edge-${id}-button-${Date.now()}`, source: id, target: newNode.id });
+      localStorage.setItem("edges", JSON.stringify(newEdges));
+      return newEdges;
+    });
+  };
   const addConnectedNode = () => {
     const newNode = {
       id: `node-${id}-connected`,
@@ -34,12 +53,16 @@ const CustomNode = ({ data, id, setNodes, setEdges }) => {
       <Button onClick={addConnectedNode} colorScheme="teal" size="sm" mt={2}>
         Add Linked Node
       </Button>
+      <Button onClick={addButtonNode} colorScheme="blue" size="sm" mt={2}>
+        Add Button Node
+      </Button>
     </div>
   );
 };
 
 // Define the custom node types
 const nodeTypes = {
+  button: ButtonNode,
   custom: CustomNode,
 };
 
