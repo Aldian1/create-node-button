@@ -23,7 +23,6 @@ const nodeTypes = {
 
 const Index = () => {
   const initialNodes = JSON.parse(localStorage.getItem("nodes")) || [{ id: "1", type: "custom", position: { x: 250, y: 5 }, data: { label: "Hello World", name: "item-1" } }];
-
   initialNodes.forEach((node, index) => {
     node.data.name = `item-${index + 1}`;
   });
@@ -56,7 +55,6 @@ const Index = () => {
       });
       setEditingNode(null);
     }
-    setEditingNode(null);
     setNodeName("");
   };
 
@@ -162,9 +160,6 @@ const Index = () => {
               Record Voice
             </Button>
           )}
-          <Button onClick={clearData} colorScheme="red" leftIcon={<FaTrash />}>
-            Clear Data
-          </Button>
           {audioURL && (
             <>
               <audio controls src={audioURL} style={{ marginLeft: "10px" }} />

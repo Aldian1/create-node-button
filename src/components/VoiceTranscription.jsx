@@ -19,6 +19,17 @@ function VoiceTranscription({ onCreateNode }) {
       }
     }
 
+    recognition.onend = () => {
+      setIsRecognitionStarted(false);
+      recognition.start(); // Restart recognition if it stops
+    };
+
+    return () => {
+      recognition.stop();
+    };
+  }, [isRecognitionStarted]);
+
+  useEffect(() => {
     recognition.onresult = (event) => {
       const transcriptText = Array.from(event.results)
         .map((result) => result[0])
@@ -30,12 +41,7 @@ function VoiceTranscription({ onCreateNode }) {
       }
       setTranscript(highlightedText);
     };
-
-    return () => {
-      recognition.stop();
-      setIsRecognitionStarted(false);
-    };
-  }, [isRecognitionStarted]);
+  }, [onCreateNode]);
 
   return <div style={{ position: "absolute", bottom: "10px", left: "10px", background: "white", padding: "10px", borderRadius: "5px", zIndex: 10 }} dangerouslySetInnerHTML={{ __html: transcript }} />;
 }
