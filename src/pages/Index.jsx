@@ -3,64 +3,25 @@ import NodeName from "../components/NodeName";
 import { FaPlus, FaMicrophone, FaStop, FaTrash } from "react-icons/fa";
 import React, { useCallback, useState, useEffect } from "react";
 import VoiceTranscription from "../components/VoiceTranscription";
-import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge, ReactFlowProvider } from "reactflow";
-import ButtonNode from "../components/ButtonNode";
+import ReactFlow, { MiniMap, Controls, useNodesState, useEdgesState, addEdge, ReactFlowProvider, Handle } from "reactflow";
 import "reactflow/dist/style.css";
 
 // Custom node component
-const CustomNode = ({ data, id, setNodes, setEdges }) => {
-  const addButtonNode = () => {
-    const newNode = {
-      id: `node-${id}-button`,
-      type: "button",
-      position: { x: data.position.x + 100, y: data.position.y + 100 },
-      data: { label: `Button Node ${id}`, name: `button-${id}` },
-    };
-    setNodes((nds) => {
-      const newNodes = nds.concat(newNode);
-      localStorage.setItem("nodes", JSON.stringify(newNodes));
-      return newNodes;
-    });
-    setEdges((eds) => {
-      const newEdges = eds.concat({ id: `edge-${id}-button-${Date.now()}`, source: id, target: newNode.id });
-      localStorage.setItem("edges", JSON.stringify(newEdges));
-      return newEdges;
-    });
-  };
-  const addConnectedNode = () => {
-    const newNode = {
-      id: `node-${id}-connected`,
-      type: "custom",
-      position: { x: data.position.x + 200, y: data.position.y + 200 },
-      data: { label: `Connected to ${data.label}`, name: `item-${id}-connected`, style: { opacity: 0.5 } },
-    };
-    setNodes((nds) => {
-      const newNodes = nds.concat(newNode);
-      localStorage.setItem("nodes", JSON.stringify(newNodes));
-      return newNodes;
-    });
-    setEdges((eds) => {
-      const newEdges = eds.concat({ id: `edge-${id}-connected-${Date.now()}`, source: id, target: newNode.id });
-      localStorage.setItem("edges", JSON.stringify(newEdges));
-      return newEdges;
-    });
-  };
-
+const CustomNode = ({ data }) => {
   return (
     <div style={{ padding: 10, border: "1px solid #ddd", borderRadius: 5, background: "#fff" }}>
       <div>{data.label}</div>
+      <div style={{ position: "absolute", top: 10, right: 10 }}>
+        <Handle type="source" position="right" />
+        <Handle type="target" position="left" />
+      </div>
       <NodeName name={data.name} />
-
-      <Button onClick={addButtonNode} colorScheme="blue" size="sm" mt={2}>
-        Add Button Node
-      </Button>
     </div>
   );
 };
 
 // Define the custom node types
 const nodeTypes = {
-  button: ButtonNode,
   custom: CustomNode,
 };
 
@@ -74,6 +35,15 @@ const Index = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [nodeName, setNodeName] = useState("");
+  const onConnect = useCallback(
+    (params) =>
+      setEdges((eds) => {
+        const newEdges = addEdge(params, eds);
+        localStorage.setItem("edges", JSON.stringify(newEdges));
+        return newEdges;
+      }),
+    [setEdges],
+  );
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioURL, setAudioURL] = useState(localStorage.getItem("audioURL") || "");
@@ -162,23 +132,7 @@ const Index = () => {
   return (
     <Box width="100vw" height="100vh">
       <ReactFlowProvider>
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onNodeDoubleClick={handleDoubleClick}
-          onConnect={(params) =>
-            setEdges((eds) => {
-              const newEdges = addEdge({ ...params, animated: true, style: { stroke: "#000" } }, eds);
-              localStorage.setItem("edges", JSON.stringify(newEdges));
-              return newEdges;
-            })
-          }
-          fitView
-          nodeTypes={{ custom: (props) => <CustomNode {...props} setNodes={setNodes} setEdges={setEdges} /> }}
-          style={{ width: "100%", height: "100%" }}
-        />
+        <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onNodeDoubleClick={handleDoubleClick} onConnect={onConnect} fitView nodeTypes={nodeTypes} style={{ width: "100%", height: "100%" }} />
         {editingNode && (
           <form
             onSubmit={handleNameSubmit}
