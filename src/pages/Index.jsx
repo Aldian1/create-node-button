@@ -60,6 +60,15 @@ const Index = () => {
     setNodeName("");
   };
 
+  const clearData = () => {
+    localStorage.removeItem("nodes");
+    localStorage.removeItem("edges");
+    localStorage.removeItem("audioURL");
+    setNodes([]);
+    setEdges([]);
+    setAudioURL("");
+  };
+
   const handleVoiceRecord = () => {
     if (isRecording) {
       mediaRecorder.stop();
@@ -141,6 +150,9 @@ const Index = () => {
             Add Node
           </Button>
           <Spacer />
+          <Button onClick={clearData} colorScheme="red" leftIcon={<FaTrash />}>
+            Clear Data
+          </Button>
           {isRecording ? (
             <Button onClick={handleVoiceRecord} colorScheme="red" leftIcon={<FaStop />}>
               Stop Recording
@@ -150,6 +162,9 @@ const Index = () => {
               Record Voice
             </Button>
           )}
+          <Button onClick={clearData} colorScheme="red" leftIcon={<FaTrash />}>
+            Clear Data
+          </Button>
           {audioURL && (
             <>
               <audio controls src={audioURL} style={{ marginLeft: "10px" }} />
