@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Box } from "@chakra-ui/react";
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
@@ -49,7 +50,7 @@ function VoiceTranscription({ onCreateNode }) {
     };
   }, [onCreateNode]);
 
-  return <div style={{ position: "absolute", bottom: "10px", left: "10px", background: "white", padding: "10px", borderRadius: "5px", zIndex: 10 }} dangerouslySetInnerHTML={{ __html: transcript }} />;
+  return <Box position="absolute" bottom="10px" left="10px" background="white" padding="10px" borderRadius="5px" zIndex="10" dangerouslySetInnerHTML={{ __html: transcript }} />;
 }
 
 export default VoiceTranscription;
