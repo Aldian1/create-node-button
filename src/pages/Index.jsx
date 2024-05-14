@@ -31,7 +31,9 @@ const CustomNode = ({ data, id, setNodes, setEdges }) => {
     <div style={{ padding: 10, border: "1px solid #ddd", borderRadius: 5, background: "#fff" }}>
       <div>{data.label}</div>
       <NodeName name={data.name} />
-      <button onClick={addConnectedNode}>Add Connected Node</button>
+      <Button onClick={addConnectedNode} colorScheme="teal" size="sm" mt={2}>
+        Add Linked Node
+      </Button>
     </div>
   );
 };
