@@ -41,8 +41,11 @@ function VoiceTranscription({ onCreateNode }) {
       if (/create node/i.test(transcriptText) && !nodeCreated) {
         onCreateNode();
         setNodeCreated(true);
+        setTranscript("");
+        setTimeout(() => setNodeCreated(false), 1000);
+      } else {
+        setTranscript(highlightedText);
       }
-      setTranscript(highlightedText);
     };
   }, [onCreateNode]);
 
